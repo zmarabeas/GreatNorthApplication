@@ -1,0 +1,50 @@
+1. What type of vehicle are you looking for?
+ - ['Car', 'Truck', 'SUV', 'Van', 'Motorcycle', 'Other']
+
+2. What is your budget?
+ - ['Under $400 / Month', '$400 - 499 / Month', '$500 - 599 / Month', 'Over $600 / Month']
+
+3. Do you have a trade-in?
+ - ['Yes', 'No']
+
+4. What is your credit score?
+ - ['Good (Over 650)', 'Fair (600-659)', 'Poor (Under 599)', 'Current Bankruptcy', 'No Credit / Unsure']
+
+5. What is your current employment status?
+ - ['Employed', 'Self-Employed', 'Unemployed', 'Retired', 'Other']
+
+6. What is your annual income before taxes and deductions?
+ - ['Salary $']
+
+7. How long have you been receiving this income?
+ - ['Years', 'Months']
+
+8. Where do you work?
+ - ['Company', 'Job Title']
+
+9. Where are you looking for a vehicle?
+ - ['Address', 'City', 'Province', 'Postal Code']
+
+10. How long have you lived at your current address?
+ - ['Years', 'Months']
+
+11. Do you rent or own your home?
+ - ['Rent', 'Own']
+
+12. What is your monthly payment?
+ - ['Per Month']
+
+13. Are you a Canadian citizen or permanent resident?
+ - ['Yes', 'No']
+
+14. Do you have a valid Canadian driver's licence?
+ - ['Yes', 'No']
+
+15. What is your date of birth?
+ - ['Date', 'Month', 'Year']
+
+16. Almost Done! What is your name?
+ - ['First Name', 'Last Name']
+
+17. Last Step! What is your phone number?
+ - ['Phone Number']
