@@ -52,7 +52,13 @@
     **************************************************************/
 
     function handleReset() {
-        resetUser();
+        input = {
+            name: '',
+            phone: '',
+            email: '',
+            message: '',
+            questions: {}
+        };
         questionIndex = 0;
     }
 
