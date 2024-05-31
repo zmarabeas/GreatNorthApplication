@@ -16,7 +16,7 @@
 </script>
 
 <div class=header>
-    <a href="/">
+    <a href="https://www.greatnorthfinance.com">
         <div class=logo-container>
               <img class=logo src="company-logo-black.png" alt="GNSF">
             <!-- <img class=logo src="company-logo-white.png" alt="GNSF"> -->
