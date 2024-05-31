@@ -66,6 +66,8 @@
     let appDateTime = appDate + ' ' + appTime;
     let appID = appType + ' ' + appCategory + ' ' + appSubCategory + ' ' + appDateTime;
 
+    let newQuestions
+
 
     let tracker;
 
@@ -228,8 +230,9 @@
     }else{
       if(questionIndex === 0){
         currentQuestion = 'formType';
-      }else{
-        currentQuestion = PreApprovalApplicationQuestions[questionIndex].question;
+      }else if(questionIndex === 1 && input.questions['formType'] === 'buy'){
+        {/* currentQuestion = PreApprovalApplicationQuestions[questionIndex].question; */}
+        currentQuestion = 'Are you financing?';
       }
       if(input.questions[currentQuestion]){
         selected = input.questions[currentQuestion];
@@ -280,6 +283,8 @@
             <div class=wrapper out:fade in:fade>
                 <p>Get pre-approved to buy a car after answering a few questions</p>
             </div>
+
+            {#if isVisible}
             <div class=options-container in:fly={transitionInParams} out:fly={transitionOutParams}>
                 <div class=container id=submit>
                     <!-- <button class=action id=main on:click={()=>handleNext()}><h3>Get Pre-Approved Now!</h3></button> -->
@@ -321,9 +326,11 @@
                     <button class=submit on:click={()=>submitForm()}><h3>Submit</h3></button>
                 </div>
             </div>
+            {/if}
         {:else if questionIndex === 1 && input.questions['formType'] === 'sell'}
 
-                <div class=container id=mini-info>
+          {#if isVisible}
+                <div class=container id=mini-info in:fly={transitionInParams} out:fly={transitionOutParams}>
                     <p bind:this={submitButtonElement}>Leave your information and we can get back to you later!</p>
                     <BIBinput width={100} bind:required={requiredStatus.name} type={'text'} placeholder={"First and Last Name"} label={"Name"} bind:value={input.name}/>
                     <BIBinput width={100} bind:required={requiredStatus.phone} max=10 type={'phone'} placeholder={"123-456-7890"} label={"Phone"} bind:value={input.phone}/>
@@ -331,44 +338,66 @@
                     <span class=label>What are you selling and how much do you want for it?</span>
                     <textarea name="paragraph_text" cols="50" rows="10"
                     placeholder="example: 2018 ford f150 sport 50000km $25,000" bind:value={input.message}></textarea>
-                    <button class=submit on:click={()=>submitForm()}><h3>Submit</h3></button>
-                </div>
-          
-        {:else if questionIndex < PreApprovalApplicationQuestions.length}
-            <div class=questionWrapper>
-                {#if isVisible}
-
-                    <!-- <div class=container id=info transition:fadeSlide> -->
-                    <div class=container id=info in:fly={transitionInParams} out:fly={transitionOutParams}>
-                        <p>{question.question}</p>
-
-                        <div class=options-container>
-                            {#if question.type === 'radio'}
-                                {#each question.options as option, index}
-                                    <button class=action id={selected===option?'selected':''} on:click={()=>handleSelection(option, question.question)}>{option}</button>
-                                {/each}
-                            {/if}
-                            {#if question.type === 'input'}
-                                {#each question.options as option, index}
-                                    <BIBinput width={100} max=7 type={question.inputType || 'text'}  placeholder={option} label={option} bind:value={input.questions[question.question][option]}/>
-                                    <!-- <div class=input-container>
-                                        <label for={option}>{option} | </label>
-                                        <input type="text" id={option} placeholder={option} />
-                                    </div> -->
-                                {/each}
-                            {/if}
-                            {#if question.type === 'textarea'}
-                                <textarea name="paragraph_text" cols="50" rows="10" placeholder={question.placeholder} bind:value={tracker[question.key]}></textarea>
-                            {/if}
-                        </div>
-                        <div class=row-container>
-                            <button class=back on:click={()=>handleBack()}><h3>Back </h3></button>
-                            <button class=submit id=question on:click={()=>handleNext()}><h3>{questionIndex===(PreApprovalApplicationQuestions.length-1)?'Submit':'Next'}</h3></button>
-                        </div>
+                    <div class=row-container id=actions>
+                        <button class=back on:click={()=>handleBack()}><h3>Back </h3></button>
+                        <button class=submit on:click={()=>submitForm()}><h3>Submit</h3></button>
                     </div>
+                </div>
+            {/if}
+          
+        {:else if questionIndex === 1 && input.questions['formType'] === 'buy'}
 
-                {/if}
-            </div>
+          {#if isVisible}
+            <div class=options-container in:fly={transitionInParams} out:fly={transitionOutParams}>
+                <div class=container id=mini-info>
+                    <p bind:this={submitButtonElement}>What is your price range?</p>
+                    <div class=row-container>
+                      <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"$5,000"} label={"Min"} bind:value={input.name}/>
+                      <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"10,000"} label={"Max"} bind:value={input.name}/>
+                    </div>
+                    <span class=q-title>Are you financing?</span>
+                    <div class=row-container id=row-options>
+                      <button class=q-action id={selected==='yes'?'selected':''} on:click={()=>handleSelection('yes', 'Are you financing?')}>Yes</button>
+                      <button class=q-action id={selected==='no'?'selected':''} on:click={()=>handleSelection('no', 'Are you financing?')}>No</button>
+                    </div>
+                    {#if input.questions['Are you financing?'] === 'yes'}
+                      <span class=q-title>What is your monthly budget?</span>
+                      <div class=row-container>
+                        <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"$5,000"} label={"Min"} bind:value={input.name}/>
+                        <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"10,000"} label={"Max"} bind:value={input.name}/>
+                      </div>
+                    {/if}
+                  <div class=row-container id=actions>
+                      <button class=back on:click={()=>handleBack()}><h3>Back </h3></button>
+                      <button class=submit id=question on:click={()=>handleNext()}><h3>{questionIndex===(PreApprovalApplicationQuestions.length-1)?'Submit':'Next'}</h3></button>
+                  </div>
+                </div>
+              </div>
+            {/if}
+
+        {:else if questionIndex === 2 && input.questions['formType'] === 'buy'}
+
+          {#if isVisible}
+            <div class=options-container in:fly={transitionInParams} out:fly={transitionOutParams}>
+                <div class=container id=mini-info>
+                    <span class=q-title>Do you have a trade in or asset you'd consider selling?</span>
+                    <div class=row-container id=row-options>
+                      <button class=q-action id={selected==='yes'?'selected':''} on:click={()=>handleSelection('yes', "Do you have a trade in or asset you'd consider selling?")}>Yes</button>
+                      <button class=q-action id={selected==='no'?'selected':''} on:click={()=>handleSelection('no', "Do you have a trade in or asset you'd consider selling?")}>No</button>
+                    </div>
+                    {#if input.questions["Do you have a trade in or asset you'd consider selling?"] === 'yes'}
+                      <span class=q-title>Enter the information below</span>
+                      <textarea name="paragraph_text" cols="50" rows="10"
+                      placeholder="example: 2018 ford f150 sport 50000km" bind:value={input.message}></textarea>
+                    {/if}
+                  <div class=row-container id=actions>
+                      <button class=back on:click={()=>handleBack()}><h3>Back </h3></button>
+                      <button class=submit id=question on:click={()=>handleNext()}><h3>{questionIndex===(PreApprovalApplicationQuestions.length-1)?'Submit':'Next'}</h3></button>
+                  </div>
+                </div>
+              </div>
+            {/if}
+
         {:else}
             <div class=success>
                 <div class=wrapper in:fly={transitionInParams}>
@@ -404,6 +433,11 @@
 
   .slidecontainer {
     width: 100%;
+  }
+
+  .q-title {
+    margin-top: 10px;
+    text-align: center;
   }
 
     /* The slider itself */
@@ -501,8 +535,15 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        margin-top: 40px;
         gap: 20px;
+    }
+
+    #row-options {
+      width: 100%;
+    }
+
+    #actions.row-container {
+      margin-top: 20px;
     }
 
     h3 {
@@ -546,10 +587,10 @@
 
     .submit{
       width: 100%;
+      width: 200px;
     }
 
     #question.submit {
-        width: 60%;
         margin: 0 auto;
     }
 
@@ -557,7 +598,6 @@
         background: none;
         background-color: azure;
         color: black;
-        width: 30%;
     }
 
     .wrapper {
@@ -567,6 +607,14 @@
         justify-content: center;
     }
 
+    .q-action {
+        width: 100%;
+        background-color: azure;
+        border: 1px solid #2B443C;
+        /* color: #2B443C; */
+        color: black;
+        background: azure;
+    }
 
     .action {
         width: 100%;
