@@ -7,6 +7,7 @@
     import { ref, set, update, push } from "firebase/database";
     import { fly, fade } from 'svelte/transition';
     import Range from '$lib/components/Range.svelte';
+    import BIBinput from '$lib/components/BIBinput.svelte';
 
     let input = {
         name: '',
@@ -17,10 +18,17 @@
     };
 
     let user = $userStore;
+
+    userStore.subscribe(value => {
+        user = value;
+    });
+
     const db = database;
+
     //let questionIndex = PreApprovalApplicationQuestions.length - 1;
     let questionIndex = 0;
     let question = PreApprovalApplicationQuestions[questionIndex];
+
     PreApprovalApplicationQuestions.forEach(question => {
       if(question.type === 'input'){
         input.questions[question.question] = {};
@@ -32,24 +40,56 @@
       }
     });
 
+    let submitButtonElement;
 
-    $: {
-        question = PreApprovalApplicationQuestions[questionIndex];
-        {/* console.log(question); */}
-        {/* Object.keys(PreApprovalApplicationQuestions).forEach((key, index) => { */}
-        {/*     console.log("Question: ", PreApprovalApplicationQuestions[key].question); */}
-        {/*     console.log("Answers: ", PreApprovalApplicationQuestions[key].options); */}
-        {/* }); */}
+    let rangeVal = 50;
+
+    let selected = '';
+
+    let appOptions = {
+        'buy': {
+            title: 'Buy',
+            options: ['vehicle', 'powersport unit', 'recreational asset', 'commercial asset']
+        },
+        'sell': {
+            title: 'Sell',
+            options: ['vehicle', 'powersport unit', 'recreational asset', 'commercial asset']
+        }
     }
 
-    /**************************************************************
-    TODO:
-          validate user input
-          handle errors
-          send user to thank you page / confirmation notification
-          build full application form
-          prequalify user
-    **************************************************************/
+    let appType = 'Pre-Approval';
+    let appCategory = 'Auto';
+    let appSubCategory = 'Pre-Approval';
+    let appStatus = 'In Progress';
+    let appDate = new Date().toLocaleDateString();
+    let appTime = new Date().toLocaleTimeString();
+    let appDateTime = appDate + ' ' + appTime;
+    let appID = appType + ' ' + appCategory + ' ' + appSubCategory + ' ' + appDateTime;
+
+
+    let tracker;
+
+    let app = {
+        appType: appType,
+        appCategory: appCategory,
+        appSubCategory: appSubCategory,
+        appStatus: appStatus,
+        appDate: appDate,
+        appTime: appTime,
+        appDateTime: appDateTime,
+        appID: appID,
+        user: tracker
+    };
+
+    let distance = 50;
+    let duration = 200;
+    let transitionInParams = { x: distance, duration: duration};
+    let transitionOutParams = { x: -distance, duration: duration};
+    let isVisible = true;
+    let currentQuestion = PreApprovalApplicationQuestions[questionIndex].question;
+
+    onMount(() => {
+    });
 
     function handleReset() {
         input = {
@@ -78,27 +118,52 @@
         });
     }
 
-    userStore.subscribe(value => {
-        user = value;
-    });
 
-    onMount(() => {
-    });
-
-
+    let requiredMessage = '';
+    let requiredStatus = {
+      name: false,
+      phone: false,
+      email: false
+    };
     async function submitForm() {
       let nameQ = 'Almost Done! What is your name?';
       let phoneQ = 'Last Step! What is your phone number?';
-      tracker.name = tracker.questions[nameQ]['First Name'] + ' ' + tracker.questions[nameQ]['Last Name'];
-      tracker.phone = tracker.questions[phoneQ]['Phone Number'];
-      tracker.type = 'pre-approval';
-      tracker.status = 'new';
+
+      if(input.questions['formType'] === 'sell'){
+          tracker.type = 'sell',
+          tracker.status = 'new'
+      }else{
+        tracker.name = tracker.questions[nameQ]['First Name'] + ' ' + tracker.questions[nameQ]['Last Name'];
+        tracker.phone = tracker.questions[phoneQ]['Phone Number'];
+        tracker.type = 'pre-approval';
+        tracker.status = 'new';
+      }
+
       console.log('Submitting user info: ', tracker);
+      
+      if(tracker.name === ''){
+        requiredMessage = 'Please enter your name';
+        requiredStatus.name = true;
+        return;
+      }else{
+        requiredStatus.name = false;
+      }
+      if(tracker.phone === '' && tracker.email === ''){
+        requiredMessage = 'Please enter your phone number or email';
+        requiredStatus.phone = true;
+        requiredStatus.email = true;
+        return;
+      }else{
+        requiredStatus.phone = false;
+        requiredStatus.email = false;
+      }
+
       submitApplicationData(tracker);
+
+      questionIndex = Infinity;
       // writeUserData(tracker);
     }
 
-    let selected = '';
     async function handleSelection(option, question=null) {
         console.log('Selected: ', option);
         selected = option;
@@ -123,26 +188,6 @@
       }
     }
 
-    let tracker;
-
-    $: {
-        tracker = {
-            name: input.name,
-            phone: input.phone,
-            email: input.email,
-            message: input.message,
-            questions: input.questions
-        }
-        //remove all non numbers from phone
-        tracker.phone = tracker.phone.replace(/\D/g, '');
-        console.log(tracker);
-    }
-
-    let distance = 50;
-    let duration = 200;
-    let transitionInParams = { x: distance, duration: duration};
-    let transitionOutParams = { x: -distance, duration: duration};
-    let isVisible = true;
     async function handleNext() {
         if(questionIndex < PreApprovalApplicationQuestions.length - 1){
             transitionInParams = { x: distance, duration: duration};
@@ -162,7 +207,21 @@
         
     }
 
-  let currentQuestion = PreApprovalApplicationQuestions[questionIndex].question;
+
+    async function handleBack() {
+        if(questionIndex > 0){
+            isVisible = false;
+            transitionInParams = { x: -distance, duration: duration};
+            transitionOutParams = { x: distance, duration: duration};
+            questionIndex--;
+            setTimeout(() => {
+                isVisible = true;
+            }, 400); // Delay to wait for fade out transition
+        }else{
+            console.log('Start of questions');
+        }
+    }
+
   $: {
     if(PreApprovalApplicationQuestions[questionIndex] === undefined){
       currentQuestion = '';
@@ -181,78 +240,6 @@
     }
   }
 
-    async function handleBack() {
-        if(questionIndex > 0){
-            isVisible = false;
-            transitionInParams = { x: -distance, duration: duration};
-            transitionOutParams = { x: distance, duration: duration};
-            questionIndex--;
-            setTimeout(() => {
-                isVisible = true;
-            }, 400); // Delay to wait for fade out transition
-        }else{
-            console.log('Start of questions');
-        }
-    }
-
-    import BIBinput from '$lib/components/BIBinput.svelte';
-
-
-
-    // Select all of the following that you are interested in exploring:
-
-    // -Buy, lease or rent a vehicle, powersport unit, recreational or commercial asset
-
-    // -Sell or trade a vehicle, powersport unit, recreational or commercial asset
-
-    // -Obtain a personal loan or business loan
-
-    // -Buy a property
-
-    // -Sell a property
-
-    let appOptions = {
-        'buy': {
-            title: 'Buy, lease or rent',
-            options: ['vehicle', 'powersport unit', 'recreational asset', 'commercial asset']
-        },
-        'sell': {
-            title: 'Sell or trade',
-            options: ['vehicle', 'powersport unit', 'recreational asset', 'commercial asset']
-        },
-        'loan': {
-            title: 'Obtain a personal loan or business loan',
-            options: ['personal loan', 'business loan']
-        },
-        'property': {
-            title: 'Buy or sell a property',
-            options: ['buy property', 'sell property']
-        }
-    }
-
-    let appType = 'Pre-Approval';
-    let appCategory = 'Auto';
-    let appSubCategory = 'Pre-Approval';
-    let appStatus = 'In Progress';
-    let appDate = new Date().toLocaleDateString();
-    let appTime = new Date().toLocaleTimeString();
-    let appDateTime = appDate + ' ' + appTime;
-    let appID = appType + ' ' + appCategory + ' ' + appSubCategory + ' ' + appDateTime;
-
-    let app = {
-        appType: appType,
-        appCategory: appCategory,
-        appSubCategory: appSubCategory,
-        appStatus: appStatus,
-        appDate: appDate,
-        appTime: appTime,
-        appDateTime: appDateTime,
-        appID: appID,
-        user: tracker
-    };
-
-    console.log('App: ', app);
-
     $: {
         app = {
             appType: appType,
@@ -267,9 +254,23 @@
         };
     }
 
-    let submitButtonElement;
+    $: {
+        question = PreApprovalApplicationQuestions[questionIndex];
+    }
 
-    let rangeVal = 50;
+    $: {
+        tracker = {
+            name: input.name,
+            phone: input.phone,
+            email: input.email,
+            message: input.message,
+            questions: input.questions
+        }
+        //remove all non numbers from phone
+        tracker.phone = tracker.phone.replace(/\D/g, '');
+        console.log(tracker);
+    }
+
 </script>
 
 
@@ -320,6 +321,19 @@
                     <button class=submit on:click={()=>submitForm()}><h3>Submit</h3></button>
                 </div>
             </div>
+        {:else if questionIndex === 1 && input.questions['formType'] === 'sell'}
+
+                <div class=container id=mini-info>
+                    <p bind:this={submitButtonElement}>Leave your information and we can get back to you later!</p>
+                    <BIBinput width={100} bind:required={requiredStatus.name} type={'text'} placeholder={"First and Last Name"} label={"Name"} bind:value={input.name}/>
+                    <BIBinput width={100} bind:required={requiredStatus.phone} max=10 type={'phone'} placeholder={"123-456-7890"} label={"Phone"} bind:value={input.phone}/>
+                    <BIBinput width={100} bind:required={requiredStatus.email} type={'text'} placeholder={"BestDeals@gnsf.com"} label={"E-Mail"} bind:value={input.email}/>
+                    <span class=label>What are you selling and how much do you want for it?</span>
+                    <textarea name="paragraph_text" cols="50" rows="10"
+                    placeholder="example: 2018 ford f150 sport 50000km $25,000" bind:value={input.message}></textarea>
+                    <button class=submit on:click={()=>submitForm()}><h3>Submit</h3></button>
+                </div>
+          
         {:else if questionIndex < PreApprovalApplicationQuestions.length}
             <div class=questionWrapper>
                 {#if isVisible}

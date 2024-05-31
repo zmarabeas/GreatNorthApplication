@@ -6,6 +6,7 @@
     export let label='label';
     export let type='text';
     export let max;
+    export let required=false;
 
 
     function formatNumber(input, max) {
@@ -62,7 +63,7 @@
 
 </script>
 
-<div class=bib-container style="max-width:{width}%">
+<div class=bib-container id={required===true?'required':''} style="max-width:{width}%">
     <span class=bib-sp>{label} ❯ </span>
     <input class=bib-inp type="text" placeholder={placeholder} bind:value>
 </div>
@@ -93,6 +94,10 @@
     .bib-container:hover {
         transform: scale(1.01);
         box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    #required{
+      border: 4px solid red;
     }
 
     input:-webkit-autofill,
