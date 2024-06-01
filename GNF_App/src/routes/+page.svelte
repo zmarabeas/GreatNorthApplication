@@ -374,8 +374,8 @@
                     {#if input.questions['Are you financing?'] === 'yes'}
                       <span class=q-title>What is your monthly budget?</span>
                       <div class=row-container>
-                        <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"$5,000"} label={"Min"} bind:value={input.questions['budgetMin']}/>
-                        <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"10,000"} label={"Max"} bind:value={input.questions['budgetMax']}/>
+                        <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"$100"} label={"Min"} bind:value={input.questions['budgetMin']}/>
+                        <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"$500"} label={"Max"} bind:value={input.questions['budgetMax']}/>
                       </div>
                     {/if}
                   <div class=row-container id=actions>
