@@ -19,7 +19,7 @@
     <a href="https://www.greatnorthfinance.com">
         <div class=logo-container>
               <img class=logo src="company-logo-black.png" alt="GNSF">
-              <h1 class=arrow>←</h1>
+              <h1 class=arrow>Back to Home</h1>
             <!-- <img class=logo src="company-logo-white.png" alt="GNSF"> -->
         </div>
     </a>
@@ -71,7 +71,8 @@
     .arrow {
       color: black;
       margin: 0;
-      margin: -20px;
+      margin-bottom: -10px;
+      font-size: 1rem;
     }
 
     h4, h3 {
