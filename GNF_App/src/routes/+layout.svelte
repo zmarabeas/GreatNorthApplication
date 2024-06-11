@@ -19,6 +19,7 @@
     <a href="https://www.greatnorthfinance.com">
         <div class=logo-container>
               <img class=logo src="company-logo-black.png" alt="GNSF">
+              <h1 class=arrow>←</h1>
             <!-- <img class=logo src="company-logo-white.png" alt="GNSF"> -->
         </div>
     </a>
@@ -65,6 +66,12 @@
         display: flex;
         /* background: linear-gradient(#123d30, #2C433B); */
         align-items: flex-start;
+    }
+
+    .arrow {
+      color: black;
+      margin: 0;
+      margin: -20px;
     }
 
     h4, h3 {
