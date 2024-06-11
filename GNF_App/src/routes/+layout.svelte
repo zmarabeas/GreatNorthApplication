@@ -60,7 +60,7 @@
 
     .header {
         /* background-color: #2B443C; */
-        background-color: azure;
+        background-color: white;
         padding: 20px;
         text-align: center;
         display: flex;
@@ -87,7 +87,7 @@
     }
 
     .footer {
-        background-color: azure;
+        background-color: white;
         padding: 20px;
         text-align: center;
         display: flex;

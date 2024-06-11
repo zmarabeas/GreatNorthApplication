@@ -482,7 +482,7 @@
 
   #scroll{
     background: none;
-    background-color: azure;
+    background-color: white;
     color: black;
     width: 100%;
     margin-top: 55px;
@@ -504,7 +504,7 @@
     width: 100%; /* Full-width */
     height: 15px; /* Specified height */
     /* background: #d3d3d3; Grey background */
-    background: azure;
+    background: white;
     border-radius: 15px;
     outline: none; /* Remove outline */
     opacity: 0.8; /* Set transparency (for mouse-over effects on hover) */
@@ -653,7 +653,7 @@
 
     .back {
         background: none;
-        background-color: azure;
+        background-color: white;
         color: black;
     }
 
@@ -666,32 +666,32 @@
 
     .q-action {
         width: 100%;
-        background-color: azure;
+        background-color: white;
         border: 1px solid #2B443C;
         /* color: #2B443C; */
         color: black;
-        background: azure;
+        background: white;
     }
 
     .action {
         width: 100%;
-        background-color: azure;
+        background-color: white;
         border: 1px solid #2B443C;
         /* color: #2B443C; */
         color: black;
-        background: azure;
+        background: white;
     }
 
     #selected {
         background-color: #0665C1;
-        border: 2px solid azure;
-        color: azure;
+        border: 2px solid white;
+        color: white;
         transform: translate(1px, 1px);
     }
 
     #main.action {
         background: linear-gradient(#2C433B, #123d30);
-        color: azure
+        color:white;
     }
 
 
@@ -720,7 +720,7 @@
         padding: 10px;
         border-radius: 5px;
         border: 1px solid #2B443C;
-        background-color: azure;
+        background-color: white;
         color: black;
         margin: 0;
     }
