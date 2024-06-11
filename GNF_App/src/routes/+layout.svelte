@@ -25,7 +25,7 @@
     </a>
 
     <div class=nav>
-            <h4>(403) 836-0075</h4>
+            <h4>(604) 800-2475</h4>
         <!-- <a href="/application">get pre-approved</a>
         <a href="/sell-my-car">sell my car</a>
         <a href="/inventory">view inventory</a> -->
