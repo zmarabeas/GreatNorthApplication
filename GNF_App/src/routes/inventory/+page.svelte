@@ -176,6 +176,7 @@
 
 <body>
     <div class=container bind:this={headerDiv}>
+      <a href='/'><button class=back>Back</button></a>
         <h1>Inventory</h1>
     </div>
 
@@ -216,6 +217,15 @@
   .clear {
     max-width: 20%;
   }
+  .back{
+  }
+    h1 {
+        text-align: center;
+        font-size: 2em;
+        margin: 0;
+        padding: 20px;
+
+  }
     body {
         min-height: 75vh;
     }
@@ -236,7 +246,7 @@
 
     .container {
         display: flex;
-        justify-content: space-evenly;
+        justify-content: flex-start;
         align-items: center;
         flex-direction: row;
         flex-wrap: wrap;
@@ -245,6 +255,7 @@
         margin: 0;
         gap: 2px;
         padding: 20px;
+        padding-left: 5.6%;
     }
 
     .label-wrapper {

@@ -25,7 +25,8 @@
     </a>
 
     <div class=nav>
-            <h4>(604) 800-2475</h4>
+      <a href="/inventory"><h4>view inventory</h4></a>
+      <a href="tel:604-800-2475"><h4>(604) 800-2475</h4></a>
         <!-- <a href="/application">get pre-approved</a>
         <a href="/sell-my-car">sell my car</a>
         <a href="/inventory">view inventory</a> -->
