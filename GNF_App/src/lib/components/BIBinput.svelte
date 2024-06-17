@@ -75,7 +75,7 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        background-color: azure;
+        background-color: white;
         color:black;
         border-radius: 15px;
         height: 100%;
@@ -104,7 +104,7 @@
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active{
-    -webkit-box-shadow: 0 0 0 30px azure inset !important;
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
     .bib-inp {

@@ -19,12 +19,13 @@
     <a href="https://www.greatnorthfinance.com">
         <div class=logo-container>
               <img class=logo src="company-logo-black.png" alt="GNSF">
+              <h1 class=arrow>Back to Home</h1>
             <!-- <img class=logo src="company-logo-white.png" alt="GNSF"> -->
         </div>
     </a>
 
     <div class=nav>
-            <h4>(403) 836-0075</h4>
+            <h4>(604) 800-2475</h4>
         <!-- <a href="/application">get pre-approved</a>
         <a href="/sell-my-car">sell my car</a>
         <a href="/inventory">view inventory</a> -->
@@ -59,12 +60,19 @@
 
     .header {
         /* background-color: #2B443C; */
-        background-color: azure;
+        background-color: white;
         padding: 20px;
         text-align: center;
         display: flex;
         /* background: linear-gradient(#123d30, #2C433B); */
         align-items: flex-start;
+    }
+
+    .arrow {
+      color: black;
+      margin: 0;
+      margin-bottom: -10px;
+      font-size: 1rem;
     }
 
     h4, h3 {
@@ -80,7 +88,7 @@
     }
 
     .footer {
-        background-color: azure;
+        background-color: white;
         padding: 20px;
         text-align: center;
         display: flex;

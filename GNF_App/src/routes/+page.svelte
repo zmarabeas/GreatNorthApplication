@@ -134,6 +134,9 @@
       if(input.questions['formType'] === 'sell'){
           tracker.type = 'sell',
           tracker.status = 'new'
+      }else if(input.questions['formType'] === 'buy'){
+        tracker.type = 'buy';
+        tracker.status = 'new';
       }else{
         tracker.name = tracker.questions[nameQ]['First Name'] + ' ' + tracker.questions[nameQ]['Last Name'];
         tracker.phone = tracker.questions[phoneQ]['Phone Number'];
@@ -233,6 +236,14 @@
       }else if(questionIndex === 1 && input.questions['formType'] === 'buy'){
         {/* currentQuestion = PreApprovalApplicationQuestions[questionIndex].question; */}
         currentQuestion = 'Are you financing?';
+      }else if(questionIndex === 2 && input.questions['formType'] === 'buy'){
+        currentQuestion = "Do you have a trade in or asset you'd consider selling?";
+      }else if(questionIndex === 3 && input.questions['formType'] === 'buy'){
+        currentQuestion = 'Would you like your item delivered or pickup yourself?';
+      }else if(questionIndex === 4 && input.questions['formType'] === 'buy'){
+        currentQuestion = 'How would you like to be contacted?';
+      }else{
+        currentQuestion = PreApprovalApplicationQuestions[questionIndex].question;
       }
       if(input.questions[currentQuestion]){
         selected = input.questions[currentQuestion];
@@ -352,8 +363,8 @@
                 <div class=container id=mini-info>
                     <p bind:this={submitButtonElement}>What is your price range?</p>
                     <div class=row-container>
-                      <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"$5,000"} label={"Min"} bind:value={input.name}/>
-                      <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"10,000"} label={"Max"} bind:value={input.name}/>
+                      <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"$0"} label={"Min"} bind:value={input.questions['priceMin']}/>
+                      <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"200,000"} label={"Max"} bind:value={input.questions['priceMax']}/>
                     </div>
                     <span class=q-title>Are you financing?</span>
                     <div class=row-container id=row-options>
@@ -363,8 +374,8 @@
                     {#if input.questions['Are you financing?'] === 'yes'}
                       <span class=q-title>What is your monthly budget?</span>
                       <div class=row-container>
-                        <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"$5,000"} label={"Min"} bind:value={input.name}/>
-                        <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"10,000"} label={"Max"} bind:value={input.name}/>
+                        <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"$10"} label={"Min"} bind:value={input.questions['budgetMin']}/>
+                        <BIBinput width={55} bind:required={requiredStatus.name} type={'text'} placeholder={"$1,000"} label={"Max"} bind:value={input.questions['budgetMax']}/>
                       </div>
                     {/if}
                   <div class=row-container id=actions>
@@ -388,7 +399,7 @@
                     {#if input.questions["Do you have a trade in or asset you'd consider selling?"] === 'yes'}
                       <span class=q-title>Enter the information below</span>
                       <textarea name="paragraph_text" cols="50" rows="10"
-                      placeholder="example: 2018 ford f150 sport 50000km" bind:value={input.message}></textarea>
+                      placeholder="example: 2018 ford f150 sport 50000km" bind:value={input.questions['tradeInMessage']}></textarea>
                     {/if}
                   <div class=row-container id=actions>
                       <button class=back on:click={()=>handleBack()}><h3>Back </h3></button>
@@ -397,14 +408,60 @@
                 </div>
               </div>
             {/if}
+        {:else if questionIndex === 3 && input.questions['formType'] === 'buy'}
+
+          {#if isVisible}
+            <div class=options-container in:fly={transitionInParams} out:fly={transitionOutParams}>
+                <div class=container id=mini-info>
+                    <span class=q-title>Where are you located?</span>
+                    <BIBinput width={100} type={'text'} placeholder={"Province"} label={"Province"} bind:value={input.questions['province']}/>
+                    <BIBinput width={100} type={'text'} placeholder={"City"} label={"City"} bind:value={input.questions['city']}/>
+                    <span class=q-title>Would you like your item delivered or pickup yourself?</span>
+                    <div class=row-container id=row-options>
+                      <button class=q-action id={selected==='delivery'?'selected':''} on:click={()=>handleSelection('delivery', 'Would you like your item delivered or pickup yourself?')}>Delivery</button>
+                      <button class=q-action id={selected==='pickup'?'selected':''} on:click={()=>handleSelection('pickup', 'Would you like your item delivered or pickup yourself?')}>Pickup</button>
+                    </div>
+
+
+
+                  <div class=row-container id=actions>
+                      <button class=back on:click={()=>handleBack()}><h3>Back </h3></button>
+                      <button class=submit id=question on:click={()=>handleNext()}><h3>{questionIndex===(PreApprovalApplicationQuestions.length-1)?'Submit':'Next'}</h3></button>
+                  </div>
+                </div>
+              </div>
+            {/if}
+
+
+        {:else if questionIndex === 4 && input.questions['formType'] === 'buy'}
+
+          {#if isVisible}
+            <div class=options-container in:fly={transitionInParams} out:fly={transitionOutParams}>
+                <div class=container id=mini-info>
+                    <span class=q-title>Last thing</span>
+                    <BIBinput width={100} bind:required={requiredStatus.name} type={'text'} placeholder={"First and Last Name"} label={"Name"} bind:value={input.name}/>
+                    <BIBinput width={100} bind:required={requiredStatus.phone} max=10 type={'phone'} placeholder={"123-456-7890"} label={"Phone"} bind:value={input.phone}/>
+                    <BIBinput width={100} bind:required={requiredStatus.email} type={'text'} placeholder={"EpicDeals@gnsf.com"} label={"E-Mail"} bind:value={input.email}/>
+                    <span class=q-title>How would you like to be contacted?</span>
+                    <button class=q-action id={selected==='phone'?'selected':''} on:click={()=>handleSelection('phone', 'How would you like to be contacted?')}>Phone</button>
+                    <button class=q-action id={selected==='text'?'selected':''} on:click={()=>handleSelection('text', 'How would you like to be contacted?')}>Text</button>
+                    <button class=q-action id={selected==='email'?'selected':''} on:click={()=>handleSelection('email', 'How would you like to be contacted?')}>Email</button>
+
+
+
+
+                  <div class=row-container id=actions>
+                      <button class=back on:click={()=>handleBack()}><h3>Back </h3></button>
+                      <button class=submit id=question on:click={()=>submitForm()}><h3>Submit</h3></button>
+                  </div>
+                </div>
+              </div>
+            {/if}
 
         {:else}
             <div class=success>
                 <div class=wrapper in:fly={transitionInParams}>
-                    <h3>Thank you for your submission!</h3>
-                    <br>
-                    <p>We will review your information and get back to you as soon as possible.</p>
-                    <p>Have a great day!</p>
+                    <h3>Thank you, we'll get in touch ASAP</h3>
                 </div>
                 <div class=row-container>
                   <!--<button class=inventory><a href="/inventory"><h3>View Inventory</h3></a></button> -->
@@ -425,7 +482,7 @@
 
   #scroll{
     background: none;
-    background-color: azure;
+    background-color: white;
     color: black;
     width: 100%;
     margin-top: 55px;
@@ -447,7 +504,7 @@
     width: 100%; /* Full-width */
     height: 15px; /* Specified height */
     /* background: #d3d3d3; Grey background */
-    background: azure;
+    background: white;
     border-radius: 15px;
     outline: none; /* Remove outline */
     opacity: 0.8; /* Set transparency (for mouse-over effects on hover) */
@@ -596,7 +653,7 @@
 
     .back {
         background: none;
-        background-color: azure;
+        background-color: white;
         color: black;
     }
 
@@ -609,32 +666,32 @@
 
     .q-action {
         width: 100%;
-        background-color: azure;
+        background-color: white;
         border: 1px solid #2B443C;
         /* color: #2B443C; */
         color: black;
-        background: azure;
+        background: white;
     }
 
     .action {
         width: 100%;
-        background-color: azure;
+        background-color: white;
         border: 1px solid #2B443C;
         /* color: #2B443C; */
         color: black;
-        background: azure;
+        background: white;
     }
 
     #selected {
         background-color: #0665C1;
-        border: 2px solid azure;
-        color: azure;
+        border: 2px solid white;
+        color: white;
         transform: translate(1px, 1px);
     }
 
     #main.action {
         background: linear-gradient(#2C433B, #123d30);
-        color: azure
+        color:white;
     }
 
 
@@ -663,7 +720,7 @@
         padding: 10px;
         border-radius: 5px;
         border: 1px solid #2B443C;
-        background-color: azure;
+        background-color: white;
         color: black;
         margin: 0;
     }
