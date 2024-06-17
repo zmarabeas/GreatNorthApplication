@@ -15,7 +15,8 @@ export const carData = [
             mileage: '104,000',
             stock_number: 'A40661',
             dealer_number: 50220,
-            image: 'ford-edge.webp',
+            image: '2019 Ford expedition limited max/',
+            numImages: 10,
         },
         {
             make: 'Jeep',
@@ -32,7 +33,8 @@ export const carData = [
             mileage: '78,000',
             stock_number: '167550',
             dealer_number: 50220,
-            image: 'ford-edge.webp',
+            image: '2020 Jeep grand cherokee SRT/',
+            numImages: 13,
         },
         {
             make: 'Nissan',
@@ -50,7 +52,8 @@ export const carData = [
             mileage: '102,000',
             stock_number: '727111',
             dealer_number: 50220,
-            image: 'ford-edge.webp',
+            image: '2018 Nissan rogue/',
+            numImages: 20,
         },
         {
             make: 'Ford',
@@ -68,6 +71,7 @@ export const carData = [
             mileage: '64,000',
             stock_number: 'A60436',
             dealer_number: 50220,
-            image: 'ford-edge.webp',
+            image: '2022 Ford edge sel/',
+            numImages: 14,
         }
      ];

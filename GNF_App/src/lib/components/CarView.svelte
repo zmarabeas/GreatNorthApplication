@@ -14,8 +14,10 @@
     
     const db = database;
 
-    let imageIndex = 0;
+    let imageIndex = 1;
     let interestForm = false;
+
+    console.log(car);
 
     const dispatch = createEventDispatcher();
 
@@ -44,20 +46,20 @@
     let carImage = null;
     function handleImage(car, direction) {
       if (direction === 'prev') {
-        if (imageIndex > 0) {
+        if (imageIndex > 1) {
             imageIndex--;
         } else {
-            imageIndex = car.images.length - 1;
+            imageIndex = car.numImages;
         }
-        carImage.src = car.images[imageIndex];
+        carImage.src = car.image + imageIndex + '.jpg';
         console.log(carImage);
       } else if (direction === 'next') {
-          if (imageIndex < car.images.length - 1) {
+          if (imageIndex < car.numImages) {
               imageIndex++;
           } else {
-              imageIndex = 0;
+              imageIndex = 1;
           }
-          carImage.src = car.images[imageIndex];
+          carImage.src = car.image + imageIndex + '.jpg';
       }
     }
 
@@ -128,17 +130,17 @@
 
 <div class=content>
     <div class=car-image>
-      {#if car.images && car.images.length > 0}
+      {#if car.image && car.numImages > 0}
           <div class=img-wrapper>
-            <img bind:this={carImage} src={car.images[0]} alt="Car-Image" fetchPriority='high'/>
-          </div>
-          <div class=button-wrapper>
-            <button style='width: 30%' on:click={()=>handleImage(car, 'prev')}>Previous</button>
-            <span style='min-width: 20%; text-align:center;'>{imageIndex + 1} of {car.images.length}</span>
-            <button style='width: 30%'on:click={()=>handleImage(car, 'next')}>Next</button>
+            <img bind:this={carImage} src={car.image + imageIndex + '.jpg'} alt="Car-Image" fetchPriority='high'/>
           </div>
       {/if}
     </div>
+          <div class=button-wrapper>
+            <button style='width: 30%' on:click={()=>handleImage(car, 'prev')}>Previous</button>
+            <span style='min-width: 20%; text-align:center;'>{imageIndex} of {car.numImages}</span>
+            <button style='width: 30%'on:click={()=>handleImage(car, 'next')}>Next</button>
+          </div>
     <div class='main-info'>
         {#if car.display_string}
           <h3>{car.display_string}</h3>
@@ -205,7 +207,11 @@
                   <span class=spec>
                       <span class=item>
                           <p id=title>{key.replaceAll('_', ' ')}</p>
-                          <p>{value}</p>
+                          {#if key === 'mileage' || key === 'milage'}
+                              <p style='text-transform: none'>{value} km</p>
+                          {:else}
+                              <p>{value}</p>
+                          {/if}
                       </span>
                   </span>
               {/if}
@@ -262,12 +268,22 @@
       overflow: hidden;
     }
 
+
     .car-image img{
       min-width: 100%;
       min-height: 100%;
       max-width: 100%;
       max-height: 100%;
       border-radius: 15px;
+    }
+
+    .car-image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 400px;
+      gap: 10px;
     }
 
     .content{
@@ -381,5 +397,12 @@
         justify-content: flex-start;
     }
 
+    .img-wrapper img{
+      display: block;
+      max-height: 400px;
+      max-width: 100%;
+      width: auto;
+      border-radius: 15px;
+    }
 
 </style>
