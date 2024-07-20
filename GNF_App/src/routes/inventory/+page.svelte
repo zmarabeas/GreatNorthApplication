@@ -81,9 +81,12 @@
     let cars = [];
     let contentDiv = null;
     let numCars = 10;
+
+    /* add offline car data
     carData.forEach(car => {
         cars.push(car);
     });
+    */
 
 
     // handle scroll
@@ -115,7 +118,7 @@
     }
 
     onMount(() => {
-      //getInventory();
+      getInventory();
 
       // get labels from inventory
     });
@@ -142,9 +145,7 @@
         return true;
       });
 
-      for(let i = 0; i < visibleCars.length; i++) {
-        // getSearchLabels(visibleCars[i]); 
-      }
+      visibleCars = visibleCars.slice(0, numCars);
       carsKey = {};
     }
 
@@ -183,7 +184,7 @@
     {#if yScroll > 100}
         <button class=returnToTop on:click={() => headerDiv.scrollIntoView({behavior: 'smooth'})}>Return to Top</button>
     {/if} 
-    <!--
+
     <div class=label-wrapper>
       <div class=container id='labels'>
           {#if searchLabels.length > 0}
@@ -201,7 +202,7 @@
     <div class=container>
         <button class=clear on:click={()=>selectedCar={}}>Clear Filters</button>
     </div>
-    -->
+
     <div class=content bind:this={contentDiv}>
       {#key carsKey}
         {#each visibleCars as car, index}

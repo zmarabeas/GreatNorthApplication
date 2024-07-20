@@ -44,6 +44,8 @@
     let previousImage = '';
     let nextImage = '';
     let carImage = null;
+    
+    /*
     function handleImage(car, direction) {
       if (direction === 'prev') {
         if (imageIndex > 1) {
@@ -60,6 +62,27 @@
               imageIndex = 1;
           }
           carImage.src = car.image + imageIndex + '.jpg';
+      }
+    }
+
+    */
+
+    function handleImage(car, direction) {
+      if (direction === 'prev') {
+        if (imageIndex > 0) {
+            imageIndex--;
+        } else {
+            imageIndex = car.images.length - 1;
+        }
+        carImage.src = car.images[imageIndex];
+        console.log(carImage);
+      } else if (direction === 'next') {
+          if (imageIndex < car.images.length - 1) {
+              imageIndex++;
+          } else {
+              imageIndex = 0;
+          }
+          carImage.src = car.images[imageIndex];
       }
     }
 
@@ -130,15 +153,15 @@
 
 <div class=content>
     <div class=car-image>
-      {#if car.image && car.numImages > 0}
+      {#if car.images && car.images.length > 0}
           <div class=img-wrapper>
-            <img bind:this={carImage} src={car.image + imageIndex + '.jpg'} alt="Car-Image" fetchPriority='high'/>
+            <img bind:this={carImage} src={car.images[0]} alt="Car-Image" fetchPriority='high'/>
           </div>
       {/if}
     </div>
           <div class=button-wrapper>
             <button style='width: 30%' on:click={()=>handleImage(car, 'prev')}>Previous</button>
-            <span style='min-width: 20%; text-align:center;'>{imageIndex} of {car.numImages}</span>
+            <span style='min-width: 20%; text-align:center;'>{imageIndex} of {car.images.length}</span>
             <button style='width: 30%'on:click={()=>handleImage(car, 'next')}>Next</button>
           </div>
     <div class='main-info'>
