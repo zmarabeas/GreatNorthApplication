@@ -118,7 +118,7 @@
     }
 
     onMount(() => {
-      getInventory();
+      // getInventory();
 
       // get labels from inventory
     });
