@@ -163,6 +163,8 @@
         requiredStatus.email = false;
       }
 
+      tracker.timestamp = new Date().toLocaleString();
+
       submitApplicationData(tracker);
 
       questionIndex = Infinity;
